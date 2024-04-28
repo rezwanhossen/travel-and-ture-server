@@ -35,7 +35,15 @@ async function run() {
 
     app.get("/tourspot/:email", async (req, res) => {
       const email = req.params.email;
+
       const result = await turistcolec.find({ email: email }).toArray();
+      res.send(result);
+    });
+
+    app.get("/countrys/:country", async (req, res) => {
+      const country = req.params.country;
+      console.log(country);
+      const result = await turistcolec.find({ country: country }).toArray();
       res.send(result);
     });
 
@@ -86,6 +94,8 @@ async function run() {
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
   } finally {
+    // Ensures that the client will close when you finish/error
+    // await client.close();
   }
 }
 run().catch(console.dir);
