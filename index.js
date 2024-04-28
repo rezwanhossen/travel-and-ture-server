@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 const port = process.env.PORT || 5001;
 
@@ -30,6 +30,12 @@ async function run() {
     app.get("/tourspot", async (req, res) => {
       const cursor = turistcolec.find();
       const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    app.get("/tourspot/:email", async (req, res) => {
+      const email = req.params.email;
+      const result = await turistcolec.find({ email: email }).toArray();
       res.send(result);
     });
 
