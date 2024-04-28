@@ -25,6 +25,19 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     await client.connect();
+    const turistcolec = client.db("turestSpotDB").collection("turestSpot");
+
+    app.get("/tourspot", async (req, res) => {
+      const cursor = turistcolec.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    app.post("/tourspot", async (req, res) => {
+      const newTourspot = req.body;
+      const result = await turistcolec.insertOne(newTourspot);
+      res.send(result);
+    });
 
     await client.db("admin").command({ ping: 1 });
     console.log(
