@@ -39,9 +39,39 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/singledata/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await turistcolec.findOne(query);
+      console.log(result);
+      res.send(result);
+    });
+
     app.post("/tourspot", async (req, res) => {
       const newTourspot = req.body;
       const result = await turistcolec.insertOne(newTourspot);
+      res.send(result);
+    });
+
+    app.put("/updatsingledata/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const data = req.body;
+      const updatData = {
+        $set: {
+          img: data.img,
+          spotName: data.spotName,
+          country: data.country,
+          location: data.location,
+          desc: data.desc,
+          cost: data.cost,
+          season: data.season,
+
+          trvltime: data.trvltime,
+          peryear: data.peryear,
+        },
+      };
+      const result = await turistcolec.updateOne(query, updatData);
       res.send(result);
     });
 
